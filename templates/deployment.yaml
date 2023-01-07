@@ -2,15 +2,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "prometheus-snmp-notifier.fullname" . }}
+  name: {{ template "alertmanager-snmp-notifier.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "prometheus-snmp-notifier.labels" . | indent 4 }}
+    {{- include "alertmanager-snmp-notifier.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      {{- include "prometheus-snmp-notifier.selectorLabels" . | indent 6 }}
+      {{- include "alertmanager-snmp-notifier.selectorLabels" . | indent 6 }}
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "prometheus-snmp-notifier.labels" . | indent 8 }}
+        {{- include "alertmanager-snmp-notifier.labels" . | indent 8 }}
       annotations:
 {{ toYaml .Values.podAnnotations | indent 8 }}
     spec:
@@ -36,7 +36,7 @@ spec:
 {{ toYaml .Values.tolerations | indent 6 }}
     {{- end }}
       restartPolicy: {{ .Values.restartPolicy }}
-      serviceAccountName: {{ template "prometheus-snmp-notifier.serviceAccountName" . }}
+      serviceAccountName: {{ template "alertmanager-snmp-notifier.serviceAccountName" . }}
       containers:
         - name: snmp-notifier
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -73,7 +73,7 @@ spec:
                 name: {{ .Values.config.snmpCommunitySecret.name }}
                 key: {{ .Values.config.snmpCommunitySecret.key }}
           {{- else }}
-                name: {{ template "prometheus-snmp-notifier.fullname" . }}
+                name: {{ template "alertmanager-snmp-notifier.fullname" . }}
                 key: community
           {{- end }}
           {{- end }}
@@ -85,7 +85,7 @@ spec:
                 name: {{ .Values.config.snmpAuthenticationUsernameSecret.name }}
                 key: {{ .Values.config.snmpAuthenticationUsernameSecret.key }}
           {{- else }}
-                name: {{ template "prometheus-snmp-notifier.fullname" . }}
+                name: {{ template "alertmanager-snmp-notifier.fullname" . }}
                 key: authenticationUsername
           {{- end }}
           {{- end }}
@@ -97,7 +97,7 @@ spec:
                 name: {{ .Values.config.snmpAuthenticationPasswordSecret.name }}
                 key: {{ .Values.config.snmpAuthenticationPasswordSecret.key }}
           {{- else }}
-                name: {{ template "prometheus-snmp-notifier.fullname" . }}
+                name: {{ template "alertmanager-snmp-notifier.fullname" . }}
                 key: authenticationPassword
           {{- end }}
           {{- end }}
@@ -109,7 +109,7 @@ spec:
                 name: {{ .Values.config.snmpPrivatePasswordSecret.name }}
                 key: {{ .Values.config.snmpPrivatePasswordSecret.key }}
           {{- else }}
-                name: {{ template "prometheus-snmp-notifier.fullname" . }}
+                name: {{ template "alertmanager-snmp-notifier.fullname" . }}
                 key: privatePassword
           {{- end }}
           {{- end }}
@@ -151,7 +151,7 @@ spec:
       {{- if .Values.config.snmpTemplates }}
         - name: templates
           configMap:
-            name: {{ template "prometheus-snmp-notifier.fullname" . }}
+            name: {{ template "alertmanager-snmp-notifier.fullname" . }}
       {{- end }}
       {{- range .Values.extraConfigmapMounts }}
         - name: {{ .name }}

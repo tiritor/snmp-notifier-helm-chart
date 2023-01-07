@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := include "prometheus-snmp-notifier.fullname" . -}}
+{{- $serviceName := include "alertmanager-snmp-notifier.fullname" . -}}
 {{- $servicePort := .Values.service.port -}}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
@@ -10,10 +10,10 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ template "prometheus-snmp-notifier.fullname" . }}
+  name: {{ template "alertmanager-snmp-notifier.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "prometheus-snmp-notifier.labels" . | indent 4 }}
+    {{- include "alertmanager-snmp-notifier.labels" . | indent 4 }}
   annotations:
 {{ toYaml .Values.ingress.annotations | indent 4 }}
 spec:

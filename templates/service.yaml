@@ -1,14 +1,14 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ template "prometheus-snmp-notifier.fullname" . }}
+  name: {{ template "alertmanager-snmp-notifier.fullname" . }}
   namespace: {{ .Release.Namespace }}
   {{- if .Values.service.annotations }}
   annotations:
 {{ toYaml .Values.service.annotations | indent 4 }}
 {{- end }}
   labels:
-    {{- include "prometheus-snmp-notifier.labels" . | indent 4 }}
+    {{- include "alertmanager-snmp-notifier.labels" . | indent 4 }}
 {{- if .Values.service.labels }}
 {{ toYaml .Values.service.labels | indent 4 }}
 {{- end }}
@@ -23,4 +23,4 @@ spec:
 {{ toYaml .Values.service.externalIPs | indent 4 }}
 {{- end }}
   selector:
-    {{- include "prometheus-snmp-notifier.selectorLabels" . | indent 4 }}
+    {{- include "alertmanager-snmp-notifier.selectorLabels" . | indent 4 }}
